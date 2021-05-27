@@ -5,8 +5,6 @@ from models import db, setup_db, Artist, Episode, Podcast
 from auth import AuthError, requires_auth
 import sys
 from config import DevelopmentConfig
-from flask.ext.sqlalchemy import SQLAlchemy
-
 
 
 def create_app(test_config=None):
