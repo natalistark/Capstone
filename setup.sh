@@ -1,5 +1,4 @@
 #!/bin/bash
-export DATABASE_URL='postgres://wfbyfhzeplqkbv:47eafc1eb9bd776cf572f1ce38a56f7d063c7d191dd1aa325ad6478f121030c2@ec2-52-0-114-209.compute-1.amazonaws.com:5432/dckvg8tq2fu9ps'
 export AUTH0_DOMAIN='dev21.eu.auth0.com'
 export ALGORITHMS=['RS256']
 export API_AUDIENCE='capstone'
