@@ -67,7 +67,7 @@ def podcasts(jwt):
         print(error)
         print(sys.exc_info())
         raise AuthError({'code':'authorization denied', 'description':'authorization denied'}, 401)
-        return jsonify({'success': False, 'error_description': print(error)})
+        return jsonify({'success': False, 'error_description': error})
 
 @APP.route('/artists', methods=['POST'])
 @requires_auth('post:artists')
@@ -91,7 +91,7 @@ def create_artist(jwt):
         print(error)
         print(sys.exc_info())
         raise AuthError({'code':'authorization denied', 'description':'authorization denied'}, 403)
-        return jsonify({'success': False, 'error_description': print(error)})
+        return jsonify({'success': False, 'error_description': error})
 
 @APP.route('/podcasts', methods=['POST'])
 @requires_auth('post:podcasts')
@@ -116,7 +116,7 @@ def create_podcast(jwt):
         print(error)
         print(sys.exc_info())
         raise AuthError({'code':'authorization denied', 'description':'authorization denied'}, 403)
-        return jsonify({'success': False, 'error_description': print(error)})
+        return jsonify({'success': False, 'error_description': error})
 
 @APP.route('/artists/<int:id>', methods=['PATCH'])
 @requires_auth('patch:artists')
@@ -137,7 +137,7 @@ def patch_artist(jwt, id):
         print(error)
         print(sys.exc_info())
         raise AuthError({'code':'authorization denied', 'description':'authorization denied'}, 403)
-        return jsonify({'success': False, 'error_description': print(error)})
+        return jsonify({'success': False, 'error_description': error})
 
 @APP.route('/artists/<int:id>', methods=['DELETE'])
 @requires_auth('delete:artists')
@@ -154,7 +154,7 @@ def delete_artist(jwt, id):
         print(error)
         print(sys.exc_info())
         raise AuthError({'code':'authorization denied', 'description':'authorization denied'}, 403)
-        return jsonify({'success': False, 'error_description': print(error)})
+        return jsonify({'success': False, 'error_description': error})
 
 # Error Handling
 
