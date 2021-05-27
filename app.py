@@ -2,15 +2,25 @@ import os
 from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-from models import db, Artist, Episode, Podcast
+from models import db, setup_db, Artist, Episode, Podcast
 from auth import AuthError, requires_auth
+from flask_migrate import Migrate
 import sys
+from config import DevelopmentConfig
 
 
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
   CORS(app)
+  app.config['SQLALCHEMY_DATABASE_URI'] = DevelopmentConfig.DB_PATH
+  app.config['SECRET_KEY'] = DevelopmentConfig.SECRET_KEY
+  app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = DevelopmentConfig.SQLALCHEMY_TRACK_MODIFICATIONS
+
+  #initializing db
+  setup_db(app, DevelopmentConfig.DB_PATH)
+  #added migration tool
+  migrate = Migrate(app, db)
 
   return app
 
@@ -72,16 +82,15 @@ def create_artist(jwt):
         city = request.get_json()['city']
         country = request.get_json()['country']
         image_link = request.get_json()['image_link']
-        print(title, recipe)
         artist_to_create = Artist(name, city, country, image_link)
         # if failed to create instance of artist, then abort with 422 error
         if artist_to_create is None: 
             abort(403)
-        artist_to_create.insert()
-        # if failed to create long dict of artist, then abort with 422 error
-        if len(artist_to_create.long()) == 0:
+        artist_created = artist_to_create.insert()
+        # if failed to create dict of artist, then abort with 422 error
+        if len(artist_created.artist_json()) == 0:
             abort(403) 
-        return jsonify({'success':True, 'artists':artist_to_create.long()})
+        return jsonify({'success':True, 'artists':artist_created.artist_json(),'artist_id':artist_created.id})
     except Exception as error:
         print(error)
         print(sys.exc_info())
@@ -127,7 +136,7 @@ def patch_artist(jwt, id):
         artist_to_patch.image_link = request.get_json().get('image_link')
 
         artist_to_patch.update()
-        return jsonify({'success':True, 'artists':artist_to_patch.artist_json})
+        return jsonify({'success':True, 'artist_patched':artist_to_patch.artist_json})
     except Exception as error:
         print(error)
         print(sys.exc_info())
@@ -144,7 +153,7 @@ def delete_artist(jwt, id):
         if artist_to_delete is None:
             abort(404)
         artist_to_delete.delete()
-        return jsonify({'success':True, 'delete':id_to_delete})
+        return jsonify({'success':True, 'artist_deleted':id_to_delete})
     except Exception as error:
         print(error)
         print(sys.exc_info())
