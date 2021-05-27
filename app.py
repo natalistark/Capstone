@@ -1,21 +1,21 @@
 import os
 from flask import Flask, request, abort, jsonify
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import db, setup_db, Artist, Episode, Podcast
 from auth import AuthError, requires_auth
-from flask_migrate import Migrate
 import sys
 from config import DevelopmentConfig
+from flask.ext.sqlalchemy import SQLAlchemy
+
 
 
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
   #initializing db
-  setup_db(app, DevelopmentConfig.DB_PATH)
+  setup_db(app, 'postgresql://student:qwerty@localhost:5432/capstone')
   CORS(app)
-  app.config['SQLALCHEMY_DATABASE_URI'] = DevelopmentConfig.DB_PATH
+  app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://student:qwerty@localhost:5432/capstone'
   app.config['SECRET_KEY'] = DevelopmentConfig.SECRET_KEY
   app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = DevelopmentConfig.SQLALCHEMY_TRACK_MODIFICATIONS
 
