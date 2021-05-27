@@ -23,7 +23,7 @@ class CapstoneTestCase(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client
         
-        setup_db(self.app, DevelopmentConfig.DB_PATH)      
+        setup_db(self.app, os.environ.get('DATABASE_URL'))      
 
         # binds the app to the current context
         with self.app.app_context():
@@ -187,10 +187,8 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(test_data['message'], 'The entity is unprocessable')
 
     def test_403_error_deleting_artist_by_podcast_supervisor(self):
-    result = self.client().delete('/artists/' +  self.__class__.artist_id_2)
-        result = self.client().get(
-            '/artists',
-            headers={"Authorization": "Bearer " + DevelopmentConfig.PODCAST_SUPERVISOR_TOKEN}
+        result = self.client().delete(
+            '/artists', headers={"Authorization": "Bearer " + os.environ.get('PODCAST_SUPERVISOR_TOKEN')}
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
@@ -199,6 +197,7 @@ class CapstoneTestCase(unittest.TestCase):
         del_art = Artist.query.filter(Artist.id ==  self.__class__.artist_id).first()
         self.assertEqual(del_art, None)
 
+    
 # Make the tests executable
 if __name__ == "__main__":
     unittest.main()

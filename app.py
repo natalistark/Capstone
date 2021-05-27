@@ -12,11 +12,11 @@ def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
   #initializing db
-  setup_db(app, 'postgres://wfbyfhzeplqkbv:47eafc1eb9bd776cf572f1ce38a56f7d063c7d191dd1aa325ad6478f121030c2@ec2-52-0-114-209.compute-1.amazonaws.com:5432/dckvg8tq2fu9ps')
+  setup_db(app, os.environ['DATABASE_URL'])
   CORS(app)
-  app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://wfbyfhzeplqkbv:47eafc1eb9bd776cf572f1ce38a56f7d063c7d191dd1aa325ad6478f121030c2@ec2-52-0-114-209.compute-1.amazonaws.com:5432/dckvg8tq2fu9ps'
+  app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
   app.config['SECRET_KEY'] = DevelopmentConfig.SECRET_KEY
-  app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+  app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = DevelopmentConfig.SQLALCHEMY_TRACK_MODIFICATIONS
 
   return app
 
