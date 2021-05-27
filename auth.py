@@ -4,7 +4,7 @@ from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 import sys
-from ..config import DevelopmentConfig
+from config import DevelopmentConfig
 
 
 AUTH0_DOMAIN = DevelopmentConfig.AUTH0_DOMAIN
