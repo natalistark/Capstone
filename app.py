@@ -12,15 +12,12 @@ from config import DevelopmentConfig
 def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
+  #initializing db
+  setup_db(app, DevelopmentConfig.DB_PATH)
   CORS(app)
   app.config['SQLALCHEMY_DATABASE_URI'] = DevelopmentConfig.DB_PATH
   app.config['SECRET_KEY'] = DevelopmentConfig.SECRET_KEY
   app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = DevelopmentConfig.SQLALCHEMY_TRACK_MODIFICATIONS
-
-  #initializing db
-  setup_db(app, DevelopmentConfig.DB_PATH)
-  #added migration tool
-  migrate = Migrate(app, db)
 
   return app
 
