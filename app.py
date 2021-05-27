@@ -20,9 +20,9 @@ def create_app(test_config=None):
 
   return app
 
-APP = create_app()
+app = create_app()
 
-@APP.route('/artists', methods=['GET'])
+@app.route('/artists', methods=['GET'])
 @requires_auth('get:artists')
 def artists():
     try:
@@ -48,7 +48,7 @@ def artists():
         return jsonify({'success': False, 'error_description': 'error, failed with artists'})
 
 
-@APP.route('/podcasts', methods=['GET'])
+@app.route('/podcasts', methods=['GET'])
 @requires_auth('get:podcasts')
 def podcasts(jwt):
     try:
@@ -69,7 +69,7 @@ def podcasts(jwt):
         raise AuthError({'code':'authorization denied', 'description':'authorization denied'}, 401)
         return jsonify({'success': False, 'error_description': error})
 
-@APP.route('/artists', methods=['POST'])
+@app.route('/artists', methods=['POST'])
 @requires_auth('post:artists')
 def create_artist(jwt):
     try:
@@ -93,7 +93,7 @@ def create_artist(jwt):
         raise AuthError({'code':'authorization denied', 'description':'authorization denied'}, 403)
         return jsonify({'success': False, 'error_description': error})
 
-@APP.route('/podcasts', methods=['POST'])
+@app.route('/podcasts', methods=['POST'])
 @requires_auth('post:podcasts')
 def create_podcast(jwt):
     try:
@@ -118,7 +118,7 @@ def create_podcast(jwt):
         raise AuthError({'code':'authorization denied', 'description':'authorization denied'}, 403)
         return jsonify({'success': False, 'error_description': error})
 
-@APP.route('/artists/<int:id>', methods=['PATCH'])
+@app.route('/artists/<int:id>', methods=['PATCH'])
 @requires_auth('patch:artists')
 def patch_artist(jwt, id):
     try:
@@ -139,7 +139,7 @@ def patch_artist(jwt, id):
         raise AuthError({'code':'authorization denied', 'description':'authorization denied'}, 403)
         return jsonify({'success': False, 'error_description': error})
 
-@APP.route('/artists/<int:id>', methods=['DELETE'])
+@app.route('/artists/<int:id>', methods=['DELETE'])
 @requires_auth('delete:artists')
 def delete_artist(jwt, id):
     try:
@@ -158,7 +158,7 @@ def delete_artist(jwt, id):
 
 # Error Handling
 
-@APP.errorhandler(422)
+@app.errorhandler(422)
 def unprocessable(error):
     return jsonify({
         "success": False,
@@ -166,7 +166,7 @@ def unprocessable(error):
         "message": "Unprocessable"
     }), 422
 
-@APP.errorhandler(404)
+@app.errorhandler(404)
 def not_found_error(error):
     return jsonify({
         "success": False,
@@ -174,7 +174,7 @@ def not_found_error(error):
         "message": "Not found"
     }), 404
 
-@APP.errorhandler(400)
+@app.errorhandler(400)
 def bad_request_error(error):
     return jsonify({
         "success": False,
@@ -182,7 +182,7 @@ def bad_request_error(error):
         "message": "Bad request"
     }), 400
 
-@APP.errorhandler(403)
+@app.errorhandler(403)
 def bad_request_error(error):
     return jsonify({
         "success": False,
@@ -190,7 +190,7 @@ def bad_request_error(error):
         "message": "Forbidden"
     }), 403
 
-@APP.errorhandler(AuthError)
+@app.errorhandler(AuthError)
 def auth_error(AuthError):
     return jsonify({
         "success": False,
@@ -201,4 +201,4 @@ def auth_error(AuthError):
 # Launch
 
 if __name__ == '__main__':
-    APP.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
