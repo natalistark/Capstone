@@ -1,5 +1,6 @@
 import os
 from flask import Flask, request, abort, jsonify
+from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from models import db, setup_db, Artist, Episode, Podcast
 from auth import AuthError, requires_auth
@@ -15,7 +16,7 @@ def create_app(test_config=None):
   CORS(app)
   app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://student:qwerty@localhost:5432/capstone'
   app.config['SECRET_KEY'] = DevelopmentConfig.SECRET_KEY
-  app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = false
+  app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
   return app
 
