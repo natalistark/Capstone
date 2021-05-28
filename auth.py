@@ -81,12 +81,10 @@ def check_permissions(permission, payload):
  
     # if the permission role is missing from permissions payload, 
     # then abort with 403 not found error
-    try:
-        permission in payload['permissions']
-    except Exception as error:
-        print(sys.exc_info()) 
-        print(error)
-        raise AuthError({'code':'permission role is missing', 'description':'permission role is missing'}, 403)
+    if permission not in payload['permissions']:
+         print(sys.exc_info()) 
+         raise AuthError({'code':'permission role is missing', 'description':'permission role is missing'}, 403)
+    
 
 def verify_decode_jwt(token):
     dict_rsa = {}

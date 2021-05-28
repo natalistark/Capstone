@@ -27,7 +27,6 @@ Please use terminal and cd into directory of the Podcast project and with the he
 pip install -r requirements.txt
 ```
 
-This will install all of the required packages.
 
 ##### Key Dependencies
 

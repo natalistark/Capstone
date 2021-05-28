@@ -13,11 +13,12 @@ NOT_FOUND_ERROR_CODE = 404
 NOT_ALLOWED_ERROR_CODE = 405
 NOR_PROCESSABLE_ERROR_CODE = 422
 UNAUTHORIZED_ERROR_CODE = 401
+FORBIDDEN_ERROR_CODE = 403
 CATEGORY_ID = '1'
 DATABASE_URL = 'postgresql://student:qwerty@localhost:5432/capstone'
 #tokens 
-CONTENT_CREATOR_TOKEN_TEST='eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJhNjg3ODAxYjAwNjgyYmQwNjQiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjIwMjIwNSwiZXhwIjoxNjIyMjg4NjA1LCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFydGlzdHMiLCJnZXQ6cG9kY2FzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.Gz38pSqRYwd-AS4dtSb0vHeLuVFr3tJthEy4D3o_EM41Zp5zVWjkkEdWJlQt5OjnnbT7dP-iO_InojF6RtTfaUTCjD5Vz0tTf-Tpo8x9HjazjMIHkPzh8qUBtU5uBfSOP_njCVZKnUCNVLmmF4gJQytp3t5IXnXCx9jXzM9B_NsIPOiamerx8GfIfEUTA6CmBwaaXdwKenJ5UbNn6MjiRoav2WuPK_64rMkFFeqvwCXntarHSllJF0yaqB984SfBViCm9v8gRR_vr0fGONDsJbCoPo5Ecus7_XhKIxEHI7TTENjHA50QApU8URVr7jawTfjKbROdZYTDuhSQjB5szg'
-PODCAST_SUPERVISOR_TOKEN_TEST='eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJkYmQxYzc1MzAwNzA4ZGNjN2IiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjIwMjQ1MiwiZXhwIjoxNjIyMjg4ODUyLCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFydGlzdHMiLCJnZXQ6YXJ0aXN0cyIsImdldDpwb2RjYXN0cyIsInBhdGNoOmFydGlzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.iacehLPMg4GlWW78nURrvMHkLLePWH0LIzJhe00iGYjCBkYenkO9jM1DNCE1G4llRSrYsrOF35lMfYNuA4q2SnS3t2i4hf3QGOnh5Aaxkst0w0XyeB8I1f5YDOjsal9eaLzfCgmX8zro2JMxCsdqpYRo40DcwhxB4QP2tu_ju3siuRcW16x6QW3bQXCjJQFe1jswrdUZuiHNgR6CfRwaitkQhXB6-12oQG7fmYG53CgkxHdZ0pNMbdyTPnn3phQaoY-kI-pxTYnaiEeKEBxryNHkcmVnRW31j8LVkTI889ZS_sEnjfP0M6QWMHL5bf1ERPYmHtwhXa4vwYGEmiRv_g'
+CONTENT_CREATOR_TOKEN_TEST='eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJhNjg3ODAxYjAwNjgyYmQwNjQiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjIzNDYwMCwiZXhwIjoxNjIyMzIxMDAwLCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFydGlzdHMiLCJnZXQ6cG9kY2FzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.nkH_X4Dr_UxPZz9Jw4mMhDbUEnKESfqAfVkq82DwK8yJcPb4rPM_k52c2x9Rt7XrWRsfhmZTM7A7OcatjoBmscJb6xuBntATG8noZxLuMZ2bL_fhExrjjzJ_SaN8yJWA9CJQ-FMIYlzDrfHzLmuhyd7mmBLhvPbyjy1X-QVcccnEbnlXOhpPCq1Uiv-5BLnK1_dhl6EUOIQwpQxbX1DzE8brSz3HAsG0f4YHRqnye5RCmbyVkeAKvFgd-f26n9KEmXzEPe06P7lRmcRlv8UZfbQqtdy2NbmARdJTguQc-L_z7_Jm5yQPiVyc1Mdaf0To651jC0ScIsKrcDXdLMV8fQ'
+PODCAST_SUPERVISOR_TOKEN_TEST='eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJkYmQxYzc1MzAwNzA4ZGNjN2IiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjIzNDYyNiwiZXhwIjoxNjIyMzIxMDI2LCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFydGlzdHMiLCJkZWxldGU6cG9kY2FzdHMiLCJnZXQ6YXJ0aXN0cyIsImdldDpwb2RjYXN0cyIsInBhdGNoOmFydGlzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.k2dN4e2GB-eQJWiFSp4zFVwf8wnqAKgFLiqKCi_cgjPKwuHg09tp88Rh4X4s_Hv5ziRNrg-NkLabo3aLDQ3JKxciEbIMal0d9tqiljXg7M_7siCOOMxSiY7tZDblBZMZf7XLuu3jMTXWTNbSGmmdT0A8ZNDSI6UxLPHvHRyuyDes2PK1VWXhx0Uesx18UKVFBRMMDutRq209RtXYptvXWhQcaA5-ebi14e5gl05uPyGO9NooNQF5cFn9XIbcoFjDomN-KMTpJGAG1cE-gxWiLZlfqsjGjChQBR8e3E_6tgMmOn5OmX8H2MWcUri8mYKb4qR5Z1jGrulWKh0ktQk80w'
 
 
 class CapstoneTestCase(unittest.TestCase):
@@ -84,8 +85,6 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
         self.assertEqual(test_data['success'], True)
         self.assertTrue(test_data['artist_id'])
-        print('sucessfully created new artist 555555554')
-        print(test_data['artist_id'])
         if (test_data['artist_id']):
             self.__class__.artist_id_2 = str(test_data['artist_id'])
      
@@ -94,10 +93,8 @@ class CapstoneTestCase(unittest.TestCase):
         result = self.client().delete(
             '/artists/'+  self.__class__.artist_id_2,
             headers=self.headers_con)
-        print(self.__class__.artist_id_2)
-        print('insidedelart')
         test_data = json.loads(result.data)
-        self.assertEqual(result.status_code, NOT_ALLOWED_ERROR_CODE)
+        self.assertEqual(result.status_code, FORBIDDEN_ERROR_CODE)
         self.assertEqual(test_data['success'], False)
     
     #test all artists
@@ -149,13 +146,11 @@ class CapstoneTestCase(unittest.TestCase):
 
     def test_w_delete_the_artist_by_podcast_supervisor(self):
         result = self.client().delete(
-            '/artists/' + self.__class__.artist_id_2, headers=self.headers_sup)
+            '/artists/'+  self.__class__.artist_id,
+            headers=self.headers_sup)
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
         self.assertEqual(test_data['success'], True)
-        self.assertTrue(test_data['artist_id'])
-        del_art = Artist.query.filter(Artist.id ==  self.__class__.artist_id_2).first()
-        self.assertEqual(del_art, None)
 
 
     def test_a_post_artist_by_podcast_supervisor(self):
@@ -183,26 +178,36 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(test_data['message'], 'The entity is unprocessable')
 
   #test patching artists
-    def test_patch_artist(self):
+    def test_patch_artist_podcast_superviser(self):
         result = self.client().patch(
             f'/artists/' +  self.__class__.artist_id,
             json={'name':'new name', 'city':'Salt Lake City', 'country':'USA', 'image_link': 'test_image_link'},
-            headers=self.headers_con
+            headers=self.headers_sup
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
         self.assertEqual(test_data['success'], True)
         self.assertTrue(test_data['artist_id'])
     
-    def test_patching_artist_error(self):
+    def test_patching_artist_error_bad_patch(self):
+        result = self.client().patch(
+            '/artists/' +  self.__class__.artist_id, json=self.bad_artist,
+            headers=self.headers_sup
+        )
+        test_data = json.loads(result.data)
+        self.assertEqual(result.status_code, NOR_PROCESSABLE_ERROR_CODE)
+        self.assertEqual(test_data['success'], False)
+        self.assertEqual(test_data['message'], 'The entity is unprocessable') 
+
+    def test_patching_artist_error_content_creator(self):
         result = self.client().patch(
             '/artists/' +  self.__class__.artist_id, json=self.bad_artist,
             headers=self.headers_con
         )
         test_data = json.loads(result.data)
-        self.assertEqual(result.status_code, NOR_PROCESSABLE_ERROR_CODE)
+        self.assertEqual(result.status_code, FORBIDDEN_ERROR_CODE)
         self.assertEqual(test_data['success'], False)
-        self.assertEqual(test_data['message'], 'The entity is unprocessable')   
+        self.assertEqual(test_data['message'], 'permission role is missing')   
     
 # Make the tests executable
 if __name__ == "__main__":

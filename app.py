@@ -111,7 +111,7 @@ def create_app(test_config=None):
       except Exception as error:
           print(error)
           print(sys.exc_info())
-          raise AuthError({'code':'authorization denied', 'description':'authorization denied'}, 403)
+          raise AuthError({'code':'Forbidden', 'description':'Forbidden'}, 403)
           return jsonify({'success': False, 'error_description': error})
 
   @app.route('/artists/<int:id>', methods=['PATCH'])
@@ -153,7 +153,6 @@ def create_app(test_config=None):
           # if no artists are found, then abort with not found error
           if artist_to_delete is None:
               print('hohoho')
-
               abort(404)
           id = artist_to_delete.delete()
           return jsonify({'success':True, 'artist_id':id})
