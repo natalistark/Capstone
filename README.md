@@ -1,4 +1,3 @@
-
 # Full Stack Podcast Tracker App API Backend
 
 ## About
@@ -16,7 +15,7 @@ As frontend is still under development all the endpoints have to be checked prog
 
 #### Python 3.6.9 or later
 
-Installation of Python 3.6.9 or later is needed. Please install it using the official documentation of python such as this
+Installation of Python 3.6.9 or later is needed. Please install it using the official documentation of Python such as this
 https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python
 
 #### PIP Dependencies
@@ -27,273 +26,151 @@ Please use terminal and cd into directory of the Podcast project and with the he
 pip install -r requirements.txt
 ```
 
+With pip install all necessary dependencies are installed.
 
 ##### Key Dependencies
 
-- [Flask](http://flask.pocoo.org/)  is a lightweight backend microservices framework. Flask is required to handle requests and responses.
+- [Flask](http://flask.pocoo.org/)  is a easy to use backend Python framework.
 
-- [SQLAlchemy](https://www.sqlalchemy.org/) is the Python SQL toolkit and ORM we'll use handle the lightweight sqlite database. You'll primarily work in app.py and can reference models.py. 
+- [SQLAlchemy](https://www.sqlalchemy.org/) is Python frameworks dedicated to managing databases.
 
-- [Flask-CORS](https://flask-cors.readthedocs.io/en/latest/#) is the extension we'll use to handle cross origin requests from our frontend server. 
 
 ## Running the server
 
-To run the server, execute:
+In order to run the app you have to use terminal and type the following:
 ```
-python3 app.py
+FLASK_APP=app.py FLASK_DEBUG=TRUE flask run
 ```
-We can now also open the application via Heroku using the URL:
-https://warranty-tracker.herokuapp.com
-
-The live application can only be used to generate tokens via Auth0, the endpoints have to be tested using curl or Postman 
-using the token since I did not build a frontend for the application.
+Live version of the app is hosted on Heroku. Unfortunately frontend is under development and all endpoints have to checked and tested via curl or third party websites such as postman.co
+https://capstonedev211.herokuapp.com/
 
 ## DATA MODELING:
 #### models.py
-The schema for the database and helper methods to simplify API behavior are in models.py:
-- There are three tables created: Product, User, and Items_for_Sale
-- The Product table is used by the role 'user' to add new products and their warranty dates, and also retrieve these products.
-- The Product table has a foreign key on the User table for user_id.
-- The Items_for_Sale table is used by the role 'seller' to add new items to sell, and to retrieve these items.
-- The Items_for_Sale table has a foreign key on the User table for user_id as well.
-- The User table keeps track of the users who want to post or retrieve their products or items by storing their name, email, and products/item.
-Each table has an insert, update, delete, and format helper functions.
+- The model of the app is saved in models.py. There are 3 tables artists, podcasts and episodes. 
+- Artist consists of id, name, city, country, image_link.
+- Artist's id is a foreign key in Episode table
+- Episode table constist of two foreign key artist's key and podcast's key. Episode holds id, name, and release date
+- Podcast consists of id, name, city, country, image_link.
+- Podcast consists of multiple episodes, one artist can create an episode.
+
+Every table has helper function to assist with CRUD functionality
 
 ## USER ROLES:
+- There are two roles
+- Content creator can create and view episode, podcasts and artists
+- Podcast superviser create and view episode, podcasts and artists. As well podcast superviser
+can patch and delete all entries from all tables
 
 ## API ARCHITECTURE AND TESTING
 ### Endpoint Library
 
-@app.errorhandler decorators were used to format error responses as JSON objects. Custom @requires_auth decorator were used for Authorization based
-on roles of the user. Two roles are assigned to this API: 'user' and 'seller'. The 'user' role is assigned by default when someone creates an account
-from the login page, while the 'seller' role is already pre-assigned to certain users.
+In the app I used @app.errorhandler decorators and @requires_auth decorators 
 
-A token needs to be passed to each endpoint. 
-The following only works for /products endpoints:
-The token can be retrived by following these steps:
-1. Go to https: https://warranty-tracker.herokuapp.com
-2. Click on Login and enter any credentials into the Auth0 login page. The role is automatically assigned by Auth0. 
-   Alternatively, sample account that has already been created can be used:
-   Email: test_user_role@gmail.com
-   Password: test1234!
+In order to acces all enpoints, you have to use authentication, tokens are provided below
 
-#### GET '/products'
-Returns a list of all available products belonging to the user, total number of products, and a success value.
-Sample curl: 
-curl -i -H "Content-Type: application/json" -H "Authorization: Bearer {INSERT_TOKEN_HERE}" http://localhost:5000/products 
-Sample response output:
-{
-  "products": [
-    {
-      "date_purchased": "Thu, 12 May 2016 00:00:00 GMT",
-      "id": 2,
-      "name": "Printer",
-      "user_id": 2,
-      "warranty_end_date": "Tue, 12 May 2020 00:00:00 GMT"
-    },
-    {
-      "date_purchased": "Thu, 12 May 2016 00:00:00 GMT",
-      "id": 3,
-      "name": "Printer",
-      "user_id": 2,
-      "warranty_end_date": "Tue, 12 May 2020 00:00:00 GMT"
-    }
-  ],
-  "success": true,
-  "total_products": 2
-}
+Test user with role content creator
+Email: lili@mail.com
+Password: fdhdj&&GHdr43SFG@
 
-#### POST '/products'
-Returns a list of all products belonging to user, along with new product posted, a success value, and total number of products.
-Sample curl: 
-curl http://localhost:5000/products -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {INSERT_TOKEN_HERE}" -d '{"name":"Printer", "date_purchased": "2016-05-12", "warranty_end_date": "2020-05-12"}'
-Sample response output:
-{
-  "products": [
-    {
-      "date_purchased": "Thu, 12 May 2016 00:00:00 GMT",
-      "id": 2,
-      "name": "Printer",
-      "user_id": 2,
-      "warranty_end_date": "Tue, 12 May 2020 00:00:00 GMT"
-    }
-  ],
-  "success": true,
-  "total_products": 1
-}
 
-#### PATCH '/products/{product_id}'
-Returns a list of all products belonging to user, along with updated product, a success value, and total number of products.
-Sample curl:
-curl http://localhost:5000/products/1 -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {INSERT_TOKEN_HERE}" -d '{"name":"Canon Printer", "date_purchased": "2016-05-12", "warranty_end_date": "2020-05-12"}'
-{
-  "products": [
-    {
-      "date_purchased": "Thu, 12 May 2016 00:00:00 GMT",
-      "id": 2,
-      "name": "Canon Printer",
-      "user_id": 2,
-      "warranty_end_date": "Tue, 12 May 2020 00:00:00 GMT"
-    }
-  ],
-  "success": true,
-  "total_products": 1
-}
+Token: 
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJhNjg3ODAxYjAwNjgyYmQwNjQiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjIzNDYwMCwiZXhwIjoxNjIyMzIxMDAwLCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFydGlzdHMiLCJnZXQ6cG9kY2FzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.nkH_X4Dr_UxPZz9Jw4mMhDbUEnKESfqAfVkq82DwK8yJcPb4rPM_k52c2x9Rt7XrWRsfhmZTM7A7OcatjoBmscJb6xuBntATG8noZxLuMZ2bL_fhExrjjzJ_SaN8yJWA9CJQ-FMIYlzDrfHzLmuhyd7mmBLhvPbyjy1X-QVcccnEbnlXOhpPCq1Uiv-5BLnK1_dhl6EUOIQwpQxbX1DzE8brSz3HAsG0f4YHRqnye5RCmbyVkeAKvFgd-f26n9KEmXzEPe06P7lRmcRlv8UZfbQqtdy2NbmARdJTguQc-L_z7_Jm5yQPiVyc1Mdaf0To651jC0ScIsKrcDXdLMV8fQ
 
-#### DELETE '/products/{product_id}'
-Returns a list of all products after deleting the requested product, a success value, and total number of products.
-curl http://localhost:5000/products/1 -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer {INSERT_TOKEN_HERE}" 
-{
-  "products": [],
-  "success": true,
-  "total_products": 0
-}
 
-To get the tokens for /items endpoints, we need the payload to contain the seller role permissions.
-For this, we can once again go to the hosted heroku URL:
-1. Go to https: https://warranty-tracker.herokuapp.com
-2. Click on Login and enter the following credentials into Auth0, which has been designated with seller role:
-   Email: test_seller_role@gmail.com
-   Password: test1234!
- 
-#### GET '/items'
-Returns a list of all items belonging to the user, total number of items, and a success value.
-Sample curl: 
-curl -i -H "Content-Type: application/json" -H "Authorization: Bearer {INSERT_TOKEN_HERE}" http://localhost:5000/items 
-Sample response output:
-{
-  "items": [
-    {
-      "id": 2,
-      "image_link": "getprinter.com",
-      "item_description": "Brand new and good quality",
-      "name": "Printer",
-      "user_id": 3,
-      "warranty_period": 4
-    }
-  ],
-  "success": true,
-  "total_items": 1
-}
 
-#### POST '/items'
-Returns a list of all products belonging to user, along with new product posted, a success value, and total number of items.
-Sample curl: 
-curl http://localhost:5000/products -X POST -H "Content-Type: application/json" -H "Authorization: Bearer {INSERT_TOKEN_HERE}" -d '{"name":"Printer", "warranty_period": 4, "item_description": "Brand new and good quality", "image_link": "getprinter.com"}'
-Sample response output:
-{
-  "items": [
-    {
-      "id": 2,
-      "image_link": "getprinter.com",
-      "item_description": "Brand new and good quality",
-      "name": "Printer",
-      "user_id": 3,
-      "warranty_period": 4
-    }
-  ],
-  "success": true,
-  "total_items": 1
-}
+Test user with role podcast supervisor
+Email: bob@mail.com
+Password: fdhdj&&GHdr431SFG@
 
-#### DELETE '/items/1'
-Returns a list of all items after deleting the requested item, a success value, and total number of items.
-curl http://localhost:5000/items/1 -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer {INSERT_TOKEN_HERE}" 
-{
-  "products": [],
-  "success": true,
-  "total_products": 0
-}
+Token
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJkYmQxYzc1MzAwNzA4ZGNjN2IiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjIzNDYyNiwiZXhwIjoxNjIyMzIxMDI2LCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFydGlzdHMiLCJkZWxldGU6cG9kY2FzdHMiLCJnZXQ6YXJ0aXN0cyIsImdldDpwb2RjYXN0cyIsInBhdGNoOmFydGlzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.k2dN4e2GB-eQJWiFSp4zFVwf8wnqAKgFLiqKCi_cgjPKwuHg09tp88Rh4X4s_Hv5ziRNrg-NkLabo3aLDQ3JKxciEbIMal0d9tqiljXg7M_7siCOOMxSiY7tZDblBZMZf7XLuu3jMTXWTNbSGmmdT0A8ZNDSI6UxLPHvHRyuyDes2PK1VWXhx0Uesx18UKVFBRMMDutRq209RtXYptvXWhQcaA5-ebi14e5gl05uPyGO9NooNQF5cFn9XIbcoFjDomN-KMTpJGAG1cE-gxWiLZlfqsjGjChQBR8e3E_6tgMmOn5OmX8H2MWcUri8mYKb4qR5Z1jGrulWKh0ktQk80w
+
+
+If tokens are expired please use curl in terminal in order to issue new token. 
+
+curl --request POST   --url 'https://dev21.eu.auth0.com/oauth/token'   --header 'content-type: application/json'   --data '{"grant_type": "password","username":"lili@mail.com","password": "fdhdj&&GHdr43SFG@","audience": "capstone","scope": "SCOPE","client_id": "GOGSRoRAzUtDJNuPYItQE6bCEuwXlKzw","client_secret": "2GjKaCvf9qfbMKVW9HEoR9EU_-c-3000esDYu50R7FyeaeKLeTO3e5hKjsmGc9Ft"}'
+
+curl --request POST   --url 'https://dev21.eu.auth0.com/oauth/token'   --header 'content-type: application/json'   --data '{"grant_type": "password","username":"bob@mail.com","password": "fdhdj&&GHdr431SFG@","audience": "capstone","scope": "SCOPE","client_id": "GOGSRoRAzUtDJNuPYItQE6bCEuwXlKzw","client_secret": "2GjKaCvf9qfbMKVW9HEoR9EU_-c-3000esDYu50R7FyeaeKLeTO3e5hKjsmGc9Ft"}'
+
+#### GET '/podcasts'
+Returns a list of all podcasts 
+
+Example curl: 
+curl https://capstonedev211.herokuapp.com/podcasts -X GET -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJhNjg3ODAxYjAwNjgyYmQwNjQiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjE0NDk1MSwiZXhwIjoxNjIyMjMxMzUxLCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFydGlzdHMiLCJnZXQ6cG9kY2FzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.loohE4jCaSv6beWsXjIyIz1MWu5h_wCLZDw9BoRM5fpPL5IgmMLvrl2oUL1N_urUxhUWMq_H7gfdaG1xA5mkU2FJ2b9ZSAZ-nx7bS31DAG4O8jPWyTUmeAfVFWJzYzMZz8mqvgUF1GK67lgREcxLGk-DHk14sIjLSd5apVdy5boDSUxBsG9bFpeXhda19_85CvLz17Wf5jmHMrBXflIBUhTsguzQ8ic4cfIBfym3KPBl9mfMhEb7zm7WwaBfdGKI0EjkeCUAhy0y8NOFIasqSi9_rBNSkU89HmD12d7eYnEClEgMyxzL19CmIBqw2cr5gH1kAuFhiKsQoir7YdbRiw"
+
+Example response:
+{"podcasts":[{"city":"New York","country":"USA","genre":"Talk Show","id":1,"image_link":"testimagelink","name":"new podcast"}]
+
+#### GET '/artists'
+Returns a list of all artists
+Takes no arguments
+
+Example curl: 
+curl https://capstonedev211.herokuapp.com/artists -X GET -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJhNjg3ODAxYjAwNjgyYmQwNjQiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjE0NDk1MSwiZXhwIjoxNjIyMjMxMzUxLCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFydGlzdHMiLCJnZXQ6cG9kY2FzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.loohE4jCaSv6beWsXjIyIz1MWu5h_wCLZDw9BoRM5fpPL5IgmMLvrl2oUL1N_urUxhUWMq_H7gfdaG1xA5mkU2FJ2b9ZSAZ-nx7bS31DAG4O8jPWyTUmeAfVFWJzYzMZz8mqvgUF1GK67lgREcxLGk-DHk14sIjLSd5apVdy5boDSUxBsG9bFpeXhda19_85CvLz17Wf5jmHMrBXflIBUhTsguzQ8ic4cfIBfym3KPBl9mfMhEb7zm7WwaBfdGKI0EjkeCUAhy0y8NOFIasqSi9_rBNSkU89HmD12d7eYnEClEgMyxzL19CmIBqw2cr5gH1kAuFhiKsQoir7YdbRiw"
+
+Example response:
+{"artists":[{"city":"Chicago","country":"UK","id":1,"image_link":"https://homepages.cae.wisc.edu/~ece533/images/cat.png","name":"Heidy Red"},{"city":"London","country":"UK","id":2,"image_link":"testimagelink","name":"Lili Allen"},{"city":"Paris","country":"France","id":6,"image_link":"https://homepages.cae.wisc.edu/~ece533/images/cat.png","name":"Nick Green"}],"success":true}
+
+#### POST '/artists'
+Creates an artist
+Takes arguments: name, city, country, image_link
+Returns artist id and success status
+
+Example curl: 
+curl https://capstonedev211.herokuapp.com/artists -X POST -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJhNjg3ODAxYjAwNjgyYmQwNjQiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjE0NDk1MSwiZXhwIjoxNjIyMjMxMzUxLCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFydGlzdHMiLCJnZXQ6cG9kY2FzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.loohE4jCaSv6beWsXjIyIz1MWu5h_wCLZDw9BoRM5fpPL5IgmMLvrl2oUL1N_urUxhUWMq_H7gfdaG1xA5mkU2FJ2b9ZSAZ-nx7bS31DAG4O8jPWyTUmeAfVFWJzYzMZz8mqvgUF1GK67lgREcxLGk-DHk14sIjLSd5apVdy5boDSUxBsG9bFpeXhda19_85CvLz17Wf5jmHMrBXflIBUhTsguzQ8ic4cfIBfym3KPBl9mfMhEb7zm7WwaBfdGKI0EjkeCUAhy0y8NOFIasqSi9_rBNSkU89HmD12d7eYnEClEgMyxzL19CmIBqw2cr5gH1kAuFhiKsQoir7YdbRiw" -d '{"name":"Nick Green", "city": "Paris", "country": "France", "image_link": "https://homepages.cae.wisc.edu/~ece533/images/cat.png"}'
+
+Example response:
+{"artist_id":"1","success":true}
+
+
+#### POST '/podcasts'
+Creates a podcast
+Takes arguments: name, city, country, image_link, genre
+Returns podcast id and success status 
+
+Example curl: 
+curl https://capstonedev211.herokuapp.com/podcasts -X POST -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJhNjg3ODAxYjAwNjgyYmQwNjQiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjE0NDk1MSwiZXhwIjoxNjIyMjMxMzUxLCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFydGlzdHMiLCJnZXQ6cG9kY2FzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.loohE4jCaSv6beWsXjIyIz1MWu5h_wCLZDw9BoRM5fpPL5IgmMLvrl2oUL1N_urUxhUWMq_H7gfdaG1xA5mkU2FJ2b9ZSAZ-nx7bS31DAG4O8jPWyTUmeAfVFWJzYzMZz8mqvgUF1GK67lgREcxLGk-DHk14sIjLSd5apVdy5boDSUxBsG9bFpeXhda19_85CvLz17Wf5jmHMrBXflIBUhTsguzQ8ic4cfIBfym3KPBl9mfMhEb7zm7WwaBfdGKI0EjkeCUAhy0y8NOFIasqSi9_rBNSkU89HmD12d7eYnEClEgMyxzL19CmIBqw2cr5gH1kAuFhiKsQoir7YdbRiw" -d '{"name":"Life in Paris", "city": "Paris", "country": "France", "image_link": "https://homepages.cae.wisc.edu/~ece533/images/tulips.png", "genre": "Talk Show"}'
+
+Example response:
+{"podcast_id":"2","success":true}
+
+
+#### PATCH '/artists'
+Changes an artist entry
+Takes arguments: name, city, country, image_link
+Returns artist id and success status
+
+Example curl: 
+curl https://capstonedev211.herokuapp.com/artists/1 -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJhNjg3ODAxYjAwNjgyYmQwNjQiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjE0NDk1MSwiZXhwIjoxNjIyMjMxMzUxLCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFydGlzdHMiLCJnZXQ6cG9kY2FzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.loohE4jCaSv6beWsXjIyIz1MWu5h_wCLZDw9BoRM5fpPL5IgmMLvrl2oUL1N_urUxhUWMq_H7gfdaG1xA5mkU2FJ2b9ZSAZ-nx7bS31DAG4O8jPWyTUmeAfVFWJzYzMZz8mqvgUF1GK67lgREcxLGk-DHk14sIjLSd5apVdy5boDSUxBsG9bFpeXhda19_85CvLz17Wf5jmHMrBXflIBUhTsguzQ8ic4cfIBfym3KPBl9mfMhEb7zm7WwaBfdGKI0EjkeCUAhy0y8NOFIasqSi9_rBNSkU89HmD12d7eYnEClEgMyxzL19CmIBqw2cr5gH1kAuFhiKsQoir7YdbRiw" -d '{"name":"Heidy Red", "city": "Chicago", "country": "USA", "image_link": "https://homepages.cae.wisc.edu/~ece533/images/cat.png"}'
+
+Example response:
+{"artist_id":"1","success":true}
+
+#### DELETE '/artists/<artist_id>'
+Deletes an artist entry
+Takes no arguments
+Returns artist's id that was deleted and success status
+
+Example curl: 
+curl https://capstonedev211.herokuapp.com/artists/1 -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJhNjg3ODAxYjAwNjgyYmQwNjQiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjE0NDk1MSwiZXhwIjoxNjIyMjMxMzUxLCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFydGlzdHMiLCJnZXQ6cG9kY2FzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.loohE4jCaSv6beWsXjIyIz1MWu5h_wCLZDw9BoRM5fpPL5IgmMLvrl2oUL1N_urUxhUWMq_H7gfdaG1xA5mkU2FJ2b9ZSAZ-nx7bS31DAG4O8jPWyTUmeAfVFWJzYzMZz8mqvgUF1GK67lgREcxLGk-DHk14sIjLSd5apVdy5boDSUxBsG9bFpeXhda19_85CvLz17Wf5jmHMrBXflIBUhTsguzQ8ic4cfIBfym3KPBl9mfMhEb7zm7WwaBfdGKI0EjkeCUAhy0y8NOFIasqSi9_rBNSkU89HmD12d7eYnEClEgMyxzL19CmIBqw2cr5gH1kAuFhiKsQoir7YdbRiw" 
+
+Example response:
+{"artist_id":1,"success":true}
 
 ## Testing
-There are 19 unittests in test_app.py. To run this file use:
+13 unittests in test_app.py cover all app's endpoints. To launch unittests, please type the following in terminal
 ```
-dropdb warranty_test
-createdb warranty_test
-python test_app.py
+python -m unittest test_app.py
 ```
-The tests include one test for expected success and error behavior for each endpoint, and tests demonstrating role-based access control, 
-where all endpoints are tested with and without the correct authorization.
-Further, the file 'warranty-tracker-test-endpoints.postman_collection.json' contains postman tests containing tokens for specific roles.
-To run this file, follow the steps:
-1. Go to postman application.
-2. Load the collection --> Import -> directory/warranty-tracker-test-endpoints.postman_collection.json
-3. Click on the runner, select the collection and run all the tests.
 
 ## THIRD-PARTY AUTHENTICATION
 #### auth.py
-Auth0 is set up and running. The following configurations are in a .env file which is exported by the app:
-- The Auth0 Domain Name
-- The JWT code signing secret
-- The Auth0 Client ID
-The JWT token contains the permissions for the 'user' and 'seller' roles.
+Authentication is provided by third-party service auth0.com
+The JWT token is given by auth0 and gives authorization for content creator and podcast supervisor according to their roles.
 
 ## DEPLOYMENT
-The app is hosted live on heroku at the URL: 
-https://warranty-tracker.herokuapp.com
+Podcast app is deployed on Heroku
+https://capstonedev211.herokuapp.com
+No frontend is available, so curl is needed to test all the endpoints
 
-However, there is no frontend for this app yet, and it can only be presently used to authenticate using Auth0 by entering
-credentials and retrieving a fresh token to use with curl or postman.
-
-
-=====
-
-Capstone Project
-
-This is a webservice that shows podcasts, their episodes and artists that create podcasts. Content creator and podcast superviser have writes to CRUD operations.
-
-Content creator(role: Content_Creator) can:
-1. get information about artists
-Permissions: get:artists
-2. get information about podcasts
-Permissions: get:podcasts
-3. post information about artists
-Permissions: post:artists
-4. post information about podcasts
-Permissions: post:podcasts
-
-
-Podcast supervisor(role: Podcast_Superviser) can:
-1. get information about artists
-get:artists
-2. get information about podcasts
-Permissions: get:podcasts
-3. post information about artists
-Permissions: post:artists
-4. post information about podcasts
-Permissions: post:podcasts
-5. change information about artists
-Permissions: patch:artists
-6. delete information about artists
-Permissions: delete:artists
-
-
-
-
-Endpoints
-GET '/api/v1.0/podcasts'
-GET 'api/v1.0/artists/'
-DELETE 'api/v.1.0/podcasts/<int:podcast_id>'
-POST 'api/v1.0/podcasts/'
-
-GET '/api/v1.0/podcasts'
-- Fetches a dictionary of podcasts in which the keys are the ids and the value is the corresponding string of the category
-- Request Arguments: None
-- Returns: dict
-
-GET '/api/v1.0/artists'
-- Fetches a dictionary of artists 
-- Request Arguments: None
-- Returns: dict
-
-DELETE 'api/v.1.0/podcasts/<int:podcast_id>'
-- Deletes podcast with a specific podcast_id
-- Request Arguments: podcast_id
-- Returns a dictionary with success status and podcast_id of a deleted podcast
-
-
-POST 'api/v1.0/artists/'
-- Posts a new artists
-- Request Arguments: None
-- Returns dictionary with success status and artist created
 
