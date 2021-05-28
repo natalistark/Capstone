@@ -34,7 +34,8 @@ class Podcast(db.Model):
     #adds new entry
     def add(self):
         db.session.add(self)
-        db.session.commit()   
+        db.session.commit()
+        return self.id   
     #updates db
     def update(self):
         db.session.commit()
@@ -74,16 +75,18 @@ class Artist(db.Model):
     
     #adds new entry
     def add(self):
-        print("44444444444")
         db.session.add(self)
-        db.session.commit()   
+        db.session.commit()
+        return self.id    
     #updates db
     def update(self):
         db.session.commit()
+        return self.id
     #deletes entry from db
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+        return self.id
     #jsonifies object
     def artist_json(self):
             return {

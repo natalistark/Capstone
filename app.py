@@ -77,9 +77,12 @@ def create_app(test_config=None):
           artist_to_create = Artist(name, city, country, image_link)
           # if failed to create instance of artist, then abort with 422 error
           if artist_to_create is None: 
-              abort(403)
-          artist_to_create.add()
-          return jsonify({'success':True, 'artists':request.get_json()['name']})
+            abort(422)
+          if name is None:
+            abort(422)
+          id = artist_to_create.add()
+          print(id)
+          return jsonify({'success':True, 'artist_id':id})
       except Exception as error:
           print(error)
           print(sys.exc_info())
@@ -100,8 +103,8 @@ def create_app(test_config=None):
           # if failed to create instance of podcast, then abort with 422 error
           if podcast_to_create is None: 
               abort(403)
-          podcast_to_create.add()
-          return jsonify({'success':True, 'podcasts':request.get_json()['name']})
+          id = podcast_to_create.add()
+          return jsonify({'success':True, 'podcast_id':id})
       except Exception as error:
           print(error)
           print(sys.exc_info())
@@ -116,17 +119,24 @@ def create_app(test_config=None):
           # if no artists are found, then abort with not found error
           if artist_to_patch is None:
               abort(404)
-          artist_to_patch.name = request.get_json().get('name')
-          artist_to_patch.city = request.get_json().get('city')
-          artist_to_patch.county = request.get_json().get('country')
-          artist_to_patch.image_link = request.get_json().get('image_link')
+          #name cannot be None
+          name = request.get_json()['name']
+          if name is None or len(name) == 0:
+            abort(422)
+          city = request.get_json()['city']
+          country = request.get_json()['country']
+          image_link = request.get_json()['image_link']
+          artist_to_patch.name = name
+          artist_to_patch.city = city
+          artist_to_patch.county = country
+          artist_to_patch.image_link = image_link
 
-          artist_to_patch.update()
-          return jsonify({'success':True, 'artist_patched':request.get_json().get('name')})
+          id = artist_to_patch.update()
+          return jsonify({'success':True, 'artist_id': id})
       except Exception as error:
           print(error)
           print(sys.exc_info())
-          raise AuthError({'code':'authorization denied', 'description':'authorization denied'}, 403)
+          raise AuthError({'code':'The entity is unprocessable', 'description':'The entity is unprocessable'}, 422)
           return jsonify({'success': False, 'error_description': error})
 
   @app.route('/artists/<int:id>', methods=['DELETE'])
@@ -135,15 +145,20 @@ def create_app(test_config=None):
       try:
           artist_to_delete = Artist.query.filter(Artist.id==id).first()
           id_to_delete = artist_to_delete.id
+          print('hohonunu')
+
           # if no artists are found, then abort with not found error
           if artist_to_delete is None:
+              print('hohoho')
+
               abort(404)
-          artist_to_delete.delete()
-          return jsonify({'success':True, 'artist_deleted':id_to_delete})
+          id = artist_to_delete.delete()
+          return jsonify({'success':True, 'artist_id':id})
       except Exception as error:
+          print('hohohoiiiii')
           print(error)
           print(sys.exc_info())
-          raise AuthError({'code':'authorization denied', 'description':'authorization denied'}, 403)
+          raise AuthError({'code':'The entity is unprocessable', 'description':'The entity is unprocessable'}, 422)
           return jsonify({'success': False, 'error_description': error})
 
   # Error Handling
@@ -173,7 +188,7 @@ def create_app(test_config=None):
       }), 400
 
   @app.errorhandler(403)
-  def bad_request_error(error):
+  def forbidden_error(error):
       return jsonify({
           "success": False,
           "error": 403,

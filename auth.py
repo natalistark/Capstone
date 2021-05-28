@@ -33,6 +33,8 @@ def get_token_auth_header():
     #if 'Authorization' key is missing from request headers then abort with 403 error
     if 'Authorization' not in request.headers:
         print('No Authorization key')
+        print("dfdfdfdfdfdfdffd")
+        print(request.headers)
         raise AuthError({'code':'Authorization key is missing from request headers',
         'description':'Authorization key is missing from request headers'}, 401)
 

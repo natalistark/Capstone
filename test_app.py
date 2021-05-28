@@ -15,8 +15,8 @@ NOR_PROCESSABLE_ERROR_CODE = 422
 CATEGORY_ID = '1'
 DATABASE_URL = 'postgresql://student:qwerty@localhost:5432/capstone'
 #tokens 
-CONTENT_CREATOR_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJhNjg3ODAxYjAwNjgyYmQwNjQiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjE0NDk1MSwiZXhwIjoxNjIyMjMxMzUxLCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFydGlzdHMiLCJnZXQ6cG9kY2FzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.loohE4jCaSv6beWsXjIyIz1MWu5h_wCLZDw9BoRM5fpPL5IgmMLvrl2oUL1N_urUxhUWMq_H7gfdaG1xA5mkU2FJ2b9ZSAZ-nx7bS31DAG4O8jPWyTUmeAfVFWJzYzMZz8mqvgUF1GK67lgREcxLGk-DHk14sIjLSd5apVdy5boDSUxBsG9bFpeXhda19_85CvLz17Wf5jmHMrBXflIBUhTsguzQ8ic4cfIBfym3KPBl9mfMhEb7zm7WwaBfdGKI0EjkeCUAhy0y8NOFIasqSi9_rBNSkU89HmD12d7eYnEClEgMyxzL19CmIBqw2cr5gH1kAuFhiKsQoir7YdbRiw'
-PODCAST_SUPERVISOR_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJkYmQxYzc1MzAwNzA4ZGNjN2IiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjE0NTE0OCwiZXhwIjoxNjIyMjMxNTQ4LCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFydGlzdHMiLCJnZXQ6YXJ0aXN0cyIsImdldDpwb2RjYXN0cyIsInBhdGNoOmFydGlzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.nrPGAhhKKappzJCr2cvOhQCWU3rO88057DFh1YIb9zq2nFmWAElADQWvtVcNQhxeNuLMhl7jMaLFAlcFmCR_lmBzXEehAE1OcQ7cT62Tkr62lIXJcRYqPABe2_y3ZgA8sqDMF3kOAO1oET17l1Lx7__uYrFjNFuoRMWkVb_ylxSKoKdulcov2wFapnokyyzvKnhoc-_mocGhgnXvibtTZYnsYIDj_WICSFxjY14JYOtFIm6csd11E96FeC5l36xS25zLvRngwHHd82faHrwfL-xFK3H4hvycNOr6ERClfTQ0qiTsNs-h25cmAvRJXTvDh3-OSEaab5imrjeeWeItQg'
+CONTENT_CREATOR_TOKEN_TEST='eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJhNjg3ODAxYjAwNjgyYmQwNjQiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjIwMjIwNSwiZXhwIjoxNjIyMjg4NjA1LCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFydGlzdHMiLCJnZXQ6cG9kY2FzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.Gz38pSqRYwd-AS4dtSb0vHeLuVFr3tJthEy4D3o_EM41Zp5zVWjkkEdWJlQt5OjnnbT7dP-iO_InojF6RtTfaUTCjD5Vz0tTf-Tpo8x9HjazjMIHkPzh8qUBtU5uBfSOP_njCVZKnUCNVLmmF4gJQytp3t5IXnXCx9jXzM9B_NsIPOiamerx8GfIfEUTA6CmBwaaXdwKenJ5UbNn6MjiRoav2WuPK_64rMkFFeqvwCXntarHSllJF0yaqB984SfBViCm9v8gRR_vr0fGONDsJbCoPo5Ecus7_XhKIxEHI7TTENjHA50QApU8URVr7jawTfjKbROdZYTDuhSQjB5szg'
+PODCAST_SUPERVISOR_TOKEN_TEST='eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjIxTHF5WXZZdFdGOFJEaERWYnQ5MCJ9.eyJpc3MiOiJodHRwczovL2RldjIxLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2MGFmZDJkYmQxYzc1MzAwNzA4ZGNjN2IiLCJhdWQiOiJjYXBzdG9uZSIsImlhdCI6MTYyMjIwMjQ1MiwiZXhwIjoxNjIyMjg4ODUyLCJhenAiOiJHT0dTUm9SQXpVdERKTnVQWUl0UUU2YkNFdXdYbEt6dyIsImd0eSI6InBhc3N3b3JkIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFydGlzdHMiLCJnZXQ6YXJ0aXN0cyIsImdldDpwb2RjYXN0cyIsInBhdGNoOmFydGlzdHMiLCJwb3N0OmFydGlzdHMiLCJwb3N0OnBvZGNhc3RzIl19.iacehLPMg4GlWW78nURrvMHkLLePWH0LIzJhe00iGYjCBkYenkO9jM1DNCE1G4llRSrYsrOF35lMfYNuA4q2SnS3t2i4hf3QGOnh5Aaxkst0w0XyeB8I1f5YDOjsal9eaLzfCgmX8zro2JMxCsdqpYRo40DcwhxB4QP2tu_ju3siuRcW16x6QW3bQXCjJQFe1jswrdUZuiHNgR6CfRwaitkQhXB6-12oQG7fmYG53CgkxHdZ0pNMbdyTPnn3phQaoY-kI-pxTYnaiEeKEBxryNHkcmVnRW31j8LVkTI889ZS_sEnjfP0M6QWMHL5bf1ERPYmHtwhXa4vwYGEmiRv_g'
 
 
 class CapstoneTestCase(unittest.TestCase):
@@ -40,8 +40,8 @@ class CapstoneTestCase(unittest.TestCase):
 
         self.new_artist = {
         'name': 'Zelda',
-        'city': 'London',
-        'country': 'UK',
+        'city': 'Rome',
+        'country': 'Italy',
         'image_link': 'https://homepages.cae.wisc.edu/~ece533/images/zelda.png'
         }
 
@@ -66,20 +66,18 @@ class CapstoneTestCase(unittest.TestCase):
     #test all artists
     def test_get_artists(self):
         result = self.client().get(
-            '/artists',
-            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN}
+            f'/artists',
+            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN_TEST}
         )
-        data = json.loads(result.data)
         result = self.client().get('/artists')
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
         self.assertEqual(test_data['success'], True)
-        self.assertTrue(len(test_data['artists']))
     
     def test_404_error_get_artists(self):
         result = self.client().get(
-            '/artists/9000',
-            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN}
+            f'/artists/9000',
+            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN_TEST}
         )        
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, NOT_FOUND_ERROR_CODE)
@@ -88,21 +86,18 @@ class CapstoneTestCase(unittest.TestCase):
 
     #test all podcasts
     def test_get_podcasts(self):
-        result = self.client().get('/podcasts')
         result = self.client().get(
-            '/podcasts',
-            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN}
+            f'/podcasts',
+            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN_TEST}
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
         self.assertEqual(test_data['success'], True)
-        self.assertTrue(len(test_data['questions']))
-        self.assertTrue(len(test_data['podcasts']))
     
     def test_404_error_get_podcasts(self):
         result = self.client().get(
-            '/podcasts/9000',
-            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN}
+            f'/podcasts/9000',
+            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN_TEST}
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, NOT_FOUND_ERROR_CODE)
@@ -112,36 +107,36 @@ class CapstoneTestCase(unittest.TestCase):
     #test creating an artist
     def test_a_post_artist_by_podcast_supervisor(self):
         result = self.client().post(
-            '/artists',
+            f'/artists',
             json=self.new_artist,
-            headers={"Authorization": "Bearer " + PODCAST_SUPERVISOR_TOKEN}
+            headers={"Authorization": "Bearer " + PODCAST_SUPERVISOR_TOKEN_TEST}
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
         self.assertEqual(test_data['success'], True)
-        self.assertTrue(test_data['artists'])
+        self.assertTrue(test_data['artist_id'])
 
         if (test_data['artist_id']):
             self.__class__.artist_id = str(test_data['artist_id'])
     
     def test_a_post_artist_by_content_creator(self):
         result = self.client().post(
-            '/artists',
+            f'/artists',
             json=self.new_artist,
-            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN}
+            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN_TEST}
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
         self.assertEqual(test_data['success'], True)
-        self.assertTrue(test_data['artists'])
+        self.assertTrue(test_data['artist_id'])
 
         if (test_data['artist_id']):
             self.__class__.artist_id_2 = str(test_data['artist_id'])
       
     def test_422_error_creating_artist(self):
         result = self.client().post(
-            '/artists',
-            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN}
+            f'/artists',
+            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN_TEST}
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, NOR_PROCESSABLE_ERROR_CODE)
@@ -151,19 +146,19 @@ class CapstoneTestCase(unittest.TestCase):
   #test patching artists
     def test_patch_artist(self):
         result = self.client().patch(
-            '/artists/' +  self.__class__.artist_id,
+            f'/artists/' +  self.__class__.artist_id,
             json={'name':'new name'},
-            headers={"Authorization": "Bearer " + PODCAST_SUPERVISOR_TOKEN}
+            headers={"Authorization": "Bearer " + PODCAST_SUPERVISOR_TOKEN_TEST}
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
         self.assertEqual(test_data['success'], True)
-        self.assertTrue(test_data['artist_patched'])
+        self.assertTrue(test_data['artist_id'])
     
     def test_422_error_patching_artist(self):
         result = self.client().patch(
-            '/artists/' +  self.__class__.artist_id,
-            headers={"Authorization": "Bearer " + PODCAST_SUPERVISOR_TOKEN}
+            f'/artists/' +  self.__class__.artist_id,
+            headers={"Authorization": "Bearer " + PODCAST_SUPERVISOR_TOKEN_TEST}
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, NOR_PROCESSABLE_ERROR_CODE)
@@ -171,35 +166,35 @@ class CapstoneTestCase(unittest.TestCase):
         self.assertEqual(test_data['message'], 'The entity is unprocessable')
 
     #test deleting artists
-    def test_delete_the_artist_by_content_creator(self):
-        result = self.client().delete('/artists/' +  self.__class__.artist_id)
-        result = self.client().get(
-            '/artists',
-            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN}
+    def test_w_delete_the_artist_by_content_creator(self):
+        result = self.client().delete(
+            f'/artists'+  self.__class__.artist_id,
+            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN_TEST}
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
         self.assertEqual(test_data['success'], True)
-        self.assertTrue(test_data['artist_deleted'])
+        self.assertTrue(test_data['artist_id'])
         del_art = Artist.query.filter(Artist.id ==  self.__class__.artist_id).first()
         self.assertEqual(del_art, None)
     
     def test_422_error_deleting_artist(self):
-        result = self.client().delete('/artist/9000')
+        result = self.client().delete(f'/artist/9000',
+        headers={"Authorization": "Bearer " + PODCAST_SUPERVISOR_TOKEN_TEST})
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, NOR_PROCESSABLE_ERROR_CODE)
         self.assertEqual(test_data['success'], False)
         self.assertEqual(test_data['message'], 'The entity is unprocessable')
 
-    def test_403_error_deleting_artist_by_podcast_supervisor(self):
+    def test_w_403_error_deleting_artist_by_podcast_supervisor(self):
         result = self.client().delete(
-            '/artists', headers={"Authorization": "Bearer " + PODCAST_SUPERVISOR_TOKEN}
+            f'/artists/' + self.__class__.artist_id_2, headers={"Authorization": "Bearer " + PODCAST_SUPERVISOR_TOKEN_TEST}
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
         self.assertEqual(test_data['success'], True)
-        self.assertTrue(test_data['artist_deleted'])
-        del_art = Artist.query.filter(Artist.id ==  self.__class__.artist_id).first()
+        self.assertTrue(test_data['artist_id'])
+        del_art = Artist.query.filter(Artist.id ==  self.__class__.artist_id_2).first()
         self.assertEqual(del_art, None)
 
     
