@@ -26,10 +26,10 @@ class Podcast(db.Model):
 
     def __init__(self, name, city, country, image_link, genre):
         self.name = name
-        self.city = city
-        self.country = country
-        self.image_link = image_link
-        self.genre = genre
+        self.city = city or ""
+        self.country = country or ""
+        self.image_link = image_link or ""
+        self.genre = genre or ""
    
     #adds new entry
     def add(self):
@@ -69,9 +69,9 @@ class Artist(db.Model):
 
     def __init__(self, name, city, country, image_link):
         self.name = name
-        self.city = city
-        self.country = country
-        self.image_link = image_link
+        self.city = city or ""
+        self.country = country or ""
+        self.image_link = image_link or ""
     
     #adds new entry
     def add(self):
@@ -84,9 +84,10 @@ class Artist(db.Model):
         return self.id
     #deletes entry from db
     def delete(self):
+        id_del = self.id
         db.session.delete(self)
         db.session.commit()
-        return self.id
+        return id_del
     #jsonifies object
     def artist_json(self):
             return {
