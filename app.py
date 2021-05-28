@@ -20,10 +20,10 @@ def create_app(test_config=None):
 
   @app.route('/artists', methods=['GET'])
   @requires_auth('get:artists')
-  def artists():
+  def artists(jwt):
       try:
           artists_list = []
-          artists_all = Artist.query.order_by(Artist.title).all()
+          artists_all = Artist.query.order_by(Artist.name).all()
           # if no artists are found, then abort with not found error
           if artists_all is None:
               print("no artists found, have to abort with an error")
@@ -49,7 +49,7 @@ def create_app(test_config=None):
   def podcasts(jwt):
       try:
           podcasts_list = []
-          podcasts_all = Podcast.query.order_by(Podcast.title).all()
+          podcasts_all = Podcast.query.order_by(Podcast.name).all()
           # if no podcasts are found, then abort with not found error
           if podcasts_all is None:
               abort(404)
