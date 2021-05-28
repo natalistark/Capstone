@@ -78,7 +78,10 @@ def create_app(test_config=None):
           # if failed to create instance of artist, then abort with 422 error
           if artist_to_create is None: 
             abort(422)
+          #artist cannot be created without the name
           if name is None:
+            abort(422)
+          if len(name) == 0:
             abort(422)
           id = artist_to_create.add()
           print(id)
@@ -86,8 +89,8 @@ def create_app(test_config=None):
       except Exception as error:
           print(error)
           print(sys.exc_info())
-          raise AuthError({'code':'authorization denied', 'description':'authorization denied'}, 403)
-          return jsonify({'success': False, 'error_description': error})
+          raise AuthError({'code':'The entity is unprocessable', 'description':'The entity is unprocessable'}, 422)
+          return jsonify({'success': False, 'error_description': 'The entity is unprocessable'})
 
   @app.route('/podcasts', methods=['POST'])
   @requires_auth('post:podcasts')
@@ -170,6 +173,14 @@ def create_app(test_config=None):
           "error": 422,
           "message": "Unprocessable"
       }), 422
+
+  @app.errorhandler(401)
+  def not_found_error(error):
+      return jsonify({
+          "success": False,
+          "error": 401,
+          "message": "Unauthorized"
+      }), 401
 
   @app.errorhandler(404)
   def not_found_error(error):

@@ -12,6 +12,7 @@ SUCCESS_STATUS_CODE = 200
 NOT_FOUND_ERROR_CODE = 404
 NOT_ALLOWED_ERROR_CODE = 405
 NOR_PROCESSABLE_ERROR_CODE = 422
+UNAUTHORIZED_ERROR_CODE = 401
 CATEGORY_ID = '1'
 DATABASE_URL = 'postgresql://student:qwerty@localhost:5432/capstone'
 #tokens 
@@ -45,6 +46,13 @@ class CapstoneTestCase(unittest.TestCase):
         'image_link': 'https://homepages.cae.wisc.edu/~ece533/images/zelda.png'
         }
 
+        self.bad_artist = {
+        'name': '',
+        'city': 'Rome',
+        'country': 'Italy',
+        'image_link': 'https://homepages.cae.wisc.edu/~ece533/images/zelda.png'
+        }
+        
         self.new_podcast = {
         'name': 'Test podcast',
         'city': 'London',
@@ -56,6 +64,9 @@ class CapstoneTestCase(unittest.TestCase):
         self.new_podcast = {
         "searchTerm":"taj"
         }
+        
+        self.headers_con={'Authorization':'Bearer ' + CONTENT_CREATOR_TOKEN_TEST}
+        self.headers_sup={'Authorization':'Bearer ' + PODCAST_SUPERVISOR_TOKEN_TEST}
     
     def tearDown(self):
         """Executed after reach test"""
@@ -63,32 +74,55 @@ class CapstoneTestCase(unittest.TestCase):
           self.db.drop_all()
         pass
 
+    def test_a_post_artist_by_content_creator(self):
+        result = self.client().post(
+            '/artists',
+            json=self.new_artist,
+            headers=self.headers_con
+        )
+        test_data = json.loads(result.data)
+        self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
+        self.assertEqual(test_data['success'], True)
+        self.assertTrue(test_data['artist_id'])
+        print('sucessfully created new artist 555555554')
+        print(test_data['artist_id'])
+        if (test_data['artist_id']):
+            self.__class__.artist_id_2 = str(test_data['artist_id'])
+     
+    #test deleting artists
+    def test_w_delete_the_artist_by_content_creator_error(self):
+        result = self.client().delete(
+            '/artists/'+  self.__class__.artist_id_2,
+            headers=self.headers_con)
+        print(self.__class__.artist_id_2)
+        print('insidedelart')
+        test_data = json.loads(result.data)
+        self.assertEqual(result.status_code, NOT_ALLOWED_ERROR_CODE)
+        self.assertEqual(test_data['success'], False)
+    
     #test all artists
     def test_get_artists(self):
         result = self.client().get(
-            f'/artists',
-            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN_TEST}
+            '/artists',
+            headers=self.headers_con
         )
-        result = self.client().get('/artists')
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
         self.assertEqual(test_data['success'], True)
     
-    def test_404_error_get_artists(self):
+    def test_401_error_get_artists(self):
         result = self.client().get(
-            f'/artists/9000',
-            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN_TEST}
-        )        
+            '/artists')   
         test_data = json.loads(result.data)
-        self.assertEqual(result.status_code, NOT_FOUND_ERROR_CODE)
+        self.assertEqual(result.status_code, UNAUTHORIZED_ERROR_CODE)
         self.assertEqual(test_data['success'], False)
-        self.assertEqual(test_data['message'], 'Not found')
+        self.assertEqual(test_data['message'], 'Unauthorized')
 
     #test all podcasts
     def test_get_podcasts(self):
         result = self.client().get(
-            f'/podcasts',
-            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN_TEST}
+            '/podcasts',
+            headers=self.headers_con
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
@@ -96,20 +130,39 @@ class CapstoneTestCase(unittest.TestCase):
     
     def test_404_error_get_podcasts(self):
         result = self.client().get(
-            f'/podcasts/9000',
-            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN_TEST}
+            '/podcasts/9000',
+            headers=self.headers_con
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, NOT_FOUND_ERROR_CODE)
         self.assertEqual(test_data['success'], False)
         self.assertEqual(test_data['message'], 'Not found')
-    
+
     #test creating an artist
+    def test_422_error_deleting_artist(self):
+        result = self.client().delete('/artists/9000', headers=self.headers_sup)
+        test_data = json.loads(result.data)
+        self.assertEqual(result.status_code, NOR_PROCESSABLE_ERROR_CODE)
+        self.assertEqual(test_data['success'], False)
+        self.assertEqual(test_data['message'], 'The entity is unprocessable')
+
+
+    def test_w_delete_the_artist_by_podcast_supervisor(self):
+        result = self.client().delete(
+            '/artists/' + self.__class__.artist_id_2, headers=self.headers_sup)
+        test_data = json.loads(result.data)
+        self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
+        self.assertEqual(test_data['success'], True)
+        self.assertTrue(test_data['artist_id'])
+        del_art = Artist.query.filter(Artist.id ==  self.__class__.artist_id_2).first()
+        self.assertEqual(del_art, None)
+
+
     def test_a_post_artist_by_podcast_supervisor(self):
         result = self.client().post(
-            f'/artists',
+            '/artists',
             json=self.new_artist,
-            headers={"Authorization": "Bearer " + PODCAST_SUPERVISOR_TOKEN_TEST}
+            headers=self.headers_sup
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
@@ -118,25 +171,11 @@ class CapstoneTestCase(unittest.TestCase):
 
         if (test_data['artist_id']):
             self.__class__.artist_id = str(test_data['artist_id'])
-    
-    def test_a_post_artist_by_content_creator(self):
-        result = self.client().post(
-            f'/artists',
-            json=self.new_artist,
-            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN_TEST}
-        )
-        test_data = json.loads(result.data)
-        self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
-        self.assertEqual(test_data['success'], True)
-        self.assertTrue(test_data['artist_id'])
 
-        if (test_data['artist_id']):
-            self.__class__.artist_id_2 = str(test_data['artist_id'])
-      
     def test_422_error_creating_artist(self):
         result = self.client().post(
-            f'/artists',
-            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN_TEST}
+            '/artists', json=self.bad_artist,
+            headers=self.headers_con
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, NOR_PROCESSABLE_ERROR_CODE)
@@ -147,56 +186,23 @@ class CapstoneTestCase(unittest.TestCase):
     def test_patch_artist(self):
         result = self.client().patch(
             f'/artists/' +  self.__class__.artist_id,
-            json={'name':'new name'},
-            headers={"Authorization": "Bearer " + PODCAST_SUPERVISOR_TOKEN_TEST}
+            json={'name':'new name', 'city':'Salt Lake City', 'country':'USA', 'image_link': 'test_image_link'},
+            headers=self.headers_con
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
         self.assertEqual(test_data['success'], True)
         self.assertTrue(test_data['artist_id'])
     
-    def test_422_error_patching_artist(self):
+    def test_patching_artist_error(self):
         result = self.client().patch(
-            f'/artists/' +  self.__class__.artist_id,
-            headers={"Authorization": "Bearer " + PODCAST_SUPERVISOR_TOKEN_TEST}
+            '/artists/' +  self.__class__.artist_id, json=self.bad_artist,
+            headers=self.headers_con
         )
         test_data = json.loads(result.data)
         self.assertEqual(result.status_code, NOR_PROCESSABLE_ERROR_CODE)
         self.assertEqual(test_data['success'], False)
-        self.assertEqual(test_data['message'], 'The entity is unprocessable')
-
-    #test deleting artists
-    def test_w_delete_the_artist_by_content_creator(self):
-        result = self.client().delete(
-            f'/artists'+  self.__class__.artist_id,
-            headers={"Authorization": "Bearer " + CONTENT_CREATOR_TOKEN_TEST}
-        )
-        test_data = json.loads(result.data)
-        self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
-        self.assertEqual(test_data['success'], True)
-        self.assertTrue(test_data['artist_id'])
-        del_art = Artist.query.filter(Artist.id ==  self.__class__.artist_id).first()
-        self.assertEqual(del_art, None)
-    
-    def test_422_error_deleting_artist(self):
-        result = self.client().delete(f'/artist/9000',
-        headers={"Authorization": "Bearer " + PODCAST_SUPERVISOR_TOKEN_TEST})
-        test_data = json.loads(result.data)
-        self.assertEqual(result.status_code, NOR_PROCESSABLE_ERROR_CODE)
-        self.assertEqual(test_data['success'], False)
-        self.assertEqual(test_data['message'], 'The entity is unprocessable')
-
-    def test_w_403_error_deleting_artist_by_podcast_supervisor(self):
-        result = self.client().delete(
-            f'/artists/' + self.__class__.artist_id_2, headers={"Authorization": "Bearer " + PODCAST_SUPERVISOR_TOKEN_TEST}
-        )
-        test_data = json.loads(result.data)
-        self.assertEqual(result.status_code, SUCCESS_STATUS_CODE)
-        self.assertEqual(test_data['success'], True)
-        self.assertTrue(test_data['artist_id'])
-        del_art = Artist.query.filter(Artist.id ==  self.__class__.artist_id_2).first()
-        self.assertEqual(del_art, None)
-
+        self.assertEqual(test_data['message'], 'The entity is unprocessable')   
     
 # Make the tests executable
 if __name__ == "__main__":
