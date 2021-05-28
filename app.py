@@ -78,11 +78,8 @@ def create_app(test_config=None):
           # if failed to create instance of artist, then abort with 422 error
           if artist_to_create is None: 
               abort(403)
-          artist_created = artist_to_create.insert()
-          # if failed to create dict of artist, then abort with 422 error
-          if len(artist_created.artist_json()) == 0:
-              abort(403) 
-          return jsonify({'success':True, 'artists':artist_created.artist_json(),'artist_id':artist_created.id})
+          artist_to_create.add()
+          return jsonify({'success':True, 'artists':request.get_json()['name']})
       except Exception as error:
           print(error)
           print(sys.exc_info())
@@ -103,11 +100,8 @@ def create_app(test_config=None):
           # if failed to create instance of podcast, then abort with 422 error
           if podcast_to_create is None: 
               abort(403)
-          podcast_to_create.insert()
-          # if failed to create  dict of podcast, then abort with 422 error
-          if podcast_to_create.podcast_json is None:
-              abort(403) 
-          return jsonify({'success':True, 'podcasts':podcast_to_create.podcast_json()})
+          podcast_to_create.add()
+          return jsonify({'success':True, 'podcasts':request.get_json()['name']})
       except Exception as error:
           print(error)
           print(sys.exc_info())
@@ -128,7 +122,7 @@ def create_app(test_config=None):
           artist_to_patch.image_link = request.get_json().get('image_link')
 
           artist_to_patch.update()
-          return jsonify({'success':True, 'artist_patched':artist_to_patch.artist_json})
+          return jsonify({'success':True, 'artist_patched':request.get_json().get('name')})
       except Exception as error:
           print(error)
           print(sys.exc_info())

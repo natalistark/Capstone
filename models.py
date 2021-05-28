@@ -66,7 +66,7 @@ class Artist(db.Model):
     image_link = db.Column(db.String(500))
     episodes = db.relationship('Episode', backref='artist', lazy=True)  
 
-    def __init__(self, name, city, country, image_link, genre):
+    def __init__(self, name, city, country, image_link):
         self.name = name
         self.city = city
         self.country = country
@@ -74,6 +74,7 @@ class Artist(db.Model):
     
     #adds new entry
     def add(self):
+        print("44444444444")
         db.session.add(self)
         db.session.commit()   
     #updates db
