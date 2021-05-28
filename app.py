@@ -195,6 +195,7 @@ def create_app(test_config=None):
       }), AuthError.status_code
   return app
 
+app = create()
 
 # Launch
 
